@@ -7,13 +7,13 @@ function init() {
     var CANVAS_HEIGHT = 500;
 
     var scene=new THREE.Scene();
-    scene.background = new THREE.Color( 0xff0000 );//new THREE.TextureLoader().load( "images/ground.jpeg" );//new THREE.Color( 0x000000 );
+    //scene.background = new THREE.Color( 0xff0000 );//new THREE.TextureLoader().load( "images/ground.jpeg" );//new THREE.Color( 0x000000 );
     camera=new THREE.PerspectiveCamera(45,CANVAS_WIDTH/CANVAS_HEIGHT,1,1000);
     
-    renderer=new THREE.WebGLRenderer({ alpha: true });
+    renderer=new THREE.WebGLRenderer( { alpha: true });
     renderer.setSize(CANVAS_WIDTH,CANVAS_HEIGHT);
     renderer.autoClear = false;
-    renderer.setClearColor( 0xffffff, 0);
+    renderer.setClearColor( 0x000000, 0 ); 
     container.appendChild( renderer.domElement );
 
     // Update Viewport on Resize
@@ -42,17 +42,17 @@ function init() {
         }
     };
 
-    // DAT.GUI Related Stuff
-    // var gui = new dat.GUI();
-    // var cam = gui.addFolder('Camera');
-    // cam.add(options.camera, 'speed', 0, 0.0010).listen();
-    // cam.add(camera.rotation, 'x', -100, 100).listen();
-    // cam.add(camera.rotation, 'y', -100, 100).listen();
-    // cam.add(camera.rotation, 'z', -100, 100).listen();
-    // cam.add(camera.position, 'x', -100, 100).listen();
-    // cam.add(camera.position, 'y', -100, 100).listen();
-    // cam.add(camera.position, 'z', -100, 100).listen();
-    // cam.open();
+    //DAT.GUI Related Stuff
+    var gui = new dat.GUI();
+    var cam = gui.addFolder('Camera');
+    cam.add(options.camera, 'speed', 0, 0.0010).listen();
+    cam.add(camera.rotation, 'x', -100, 100).listen();
+    cam.add(camera.rotation, 'y', -100, 100).listen();
+    cam.add(camera.rotation, 'z', -100, 100).listen();
+    cam.add(camera.position, 'x', -100, 100).listen();
+    cam.add(camera.position, 'y', -100, 100).listen();
+    cam.add(camera.position, 'z', -100, 100).listen();
+    cam.open();
 
     // Instantiate a loader
     var loader = new THREE.GLTFLoader();
@@ -73,13 +73,13 @@ function init() {
         }
     );
     
-    camera.rotation.x = -2;  
+    camera.rotation.x = -1;  
     camera.rotation.z = -1;
-    camera.rotation.y = 0;
+    camera.rotation.y = -1;
 
-    camera.position.x = -1; 
-    camera.position.z = 1;
-    camera.position.y = 34;
+    camera.position.x = -21; 
+    camera.position.z = 16;
+    camera.position.y = 22;
 
     // Circle 1
     var geometry = new THREE.CircleGeometry( 0.5, 32 );
@@ -219,6 +219,11 @@ function init() {
         scene.add( mesh );
     } );
 
+    var update=function(){  
+        controls.autoRotate=true;
+        controls.update();
+    }
+
     // Draw Scene
     var render=function(){
         renderer.render(scene,camera);
@@ -227,6 +232,7 @@ function init() {
     // Run game loop (update, render, repeat)
     var GameLoop=function(){
         requestAnimationFrame(GameLoop);
+        update();
         render();
     }
 
