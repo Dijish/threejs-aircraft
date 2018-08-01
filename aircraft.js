@@ -1,10 +1,37 @@
+$(document).ready(function () {
 var renderer,camera,circle1,circle2,circle3,circle4;
 
 function init() {
 
+    if ($('.loading-container').length) {
+
+        // to show loading animation
+        $imgloader = $('.loading-container');
+        $loadingimg = $('<div id="canvasloader-container" class="onepix-imgloader"></div>');
+
+        // $loadingimg.attr("src","images/flexslider/loading.gif");
+        $imgloader.prepend($loadingimg);
+
+        // canvasloader code
+        var cl = new CanvasLoader('canvasloader-container');
+        cl.setColor('#4f4f4f'); // default is '#000000'
+        cl.setDiameter(45); // default is 40
+        cl.setDensity(75); // default is 40
+        cl.setRange(0.7); // default is 1.3
+        cl.setSpeed(3); // default is 2
+        cl.setFPS(22); // default is 24
+        cl.show(); // Hidden by default
+
+    }
+
     var container = document.getElementById("aircraft-canvas");
-    var CANVAS_WIDTH = 500;
-    var CANVAS_HEIGHT = 500;
+    var CANVAS_WIDTH = window.innerWidth;
+    var CANVAS_HEIGHT = window.innerHeight;
+
+    var projector, mouse = {
+        x: 0,
+        y: 0
+    },INTERSECTED;
 
     var scene=new THREE.Scene();
     //scene.background = new THREE.Color( 0xff0000 );//new THREE.TextureLoader().load( "images/ground.jpeg" );//new THREE.Color( 0x000000 );
@@ -54,8 +81,21 @@ function init() {
     cam.add(camera.position, 'z', -100, 100).listen();
     cam.open();
 
+    var manager = new THREE.LoadingManager();
+    manager.onLoad = function () {
+        console.log('all items loaded');
+        allItemsLoaded();
+    };
+
+    function allItemsLoaded() {
+        $('.onepix-imgloader').fadeOut();
+        // fade in content (using opacity instead of fadein() so it retains it's height.
+        $('.loading-container > *:not(.onepix-imgloader)').fadeTo(8000, 100);
+    }
+
+
     // Instantiate a loader
-    var loader = new THREE.GLTFLoader();
+    var loader = new THREE.GLTFLoader(manager);
     //Load a glTF resource
     loader.load('models/aircraft3/aircraft.gltf',// resource URL
         function ( gltf ) { // called when the resource is loaded
@@ -72,6 +112,12 @@ function init() {
             console.log( 'An error happened' );
         }
     );
+
+    // // model
+    // var loader = new THREE.FBXLoader();
+    // loader.load( 'models/aircraft4/untitled.fbx', function ( object ) {
+    //     scene.add( object );
+    // } );
     
     camera.rotation.x = -1;  
     camera.rotation.z = -1;
@@ -220,8 +266,8 @@ function init() {
     } );
 
     var update=function(){  
-        controls.autoRotate=true;
-        controls.update();
+        // controls.autoRotate=true;
+        // controls.update();
     }
 
     // Draw Scene
@@ -242,6 +288,10 @@ function init() {
 window.onload = function() {
     init();
 
+    var container = document.getElementById("aircraft-canvas");
+    var CANVAS_WIDTH = window.innerWidth;
+    var CANVAS_HEIGHT = window.innerHeight;
+
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
 
@@ -249,8 +299,10 @@ window.onload = function() {
     // Handle all clicks to determine of a three.js object was clicked and trigger its callback
     function onDocumentMouseDown(event) {
         event.preventDefault();
+        console.log("Render DOM Width x Height : "+renderer.domElement.clientWidth+' x '+renderer.domElement.clientHeight);
         mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
         mouse.y =  - (event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+        console.log("X-Y : "+mouse.x+'-'+mouse.y);
         raycaster.setFromCamera(mouse, camera);
         var meshObjects = [circle1,circle2,circle3,circle4]; // three.js objects with click handlers we are interested in
         var intersects = raycaster.intersectObjects(meshObjects);
@@ -264,12 +316,11 @@ window.onload = function() {
     // and adjust the animation to provide visual feedback accordingly
     function onDocumentMouseMove(event) {
         event.preventDefault();
-        mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+        mouse.x = (event.clientX / renderer.domElement.clientWidt) * 2 - 1;
         mouse.y =  - (event.clientY / renderer.domElement.clientHeight) * 2 + 1;
         raycaster.setFromCamera(mouse, camera);
         var intersects = raycaster.intersectObjects([circle1,circle2,circle3,circle4]);
         var canvas = document.body.getElementsByTagName('canvas')[0];
-        console.log("intersects : ",intersects);
         if (intersects.length != 0) {
             intersects[0].object.rotation.x += .005;
             canvas.style.cursor = "pointer";
@@ -281,3 +332,4 @@ window.onload = function() {
     document.addEventListener('mousedown', onDocumentMouseDown, false);
     document.addEventListener('mousemove', onDocumentMouseMove, false);
 };
+});
