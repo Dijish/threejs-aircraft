@@ -97,7 +97,7 @@ function init() {
     // Instantiate a loader
     var loader = new THREE.GLTFLoader(manager);
     //Load a glTF resource
-    loader.load('models/aircraft3/aircraft.gltf',// resource URL
+    loader.load('models/untitled.gltf',// resource URL
         function ( gltf ) { // called when the resource is loaded
             scene.add( gltf.scene );
             // scene.add( gltf.scene );
@@ -117,23 +117,28 @@ function init() {
     // var loader = new THREE.FBXLoader();
     // loader.load( 'models/aircraft4/untitled.fbx', function ( object ) {
     //     scene.add( object );
-    // } );
+    // },function ( xhr ) {// called while loading is progressing
+    //     console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+    // },function ( error ) {// called when loading has errors
+    //     console.log( 'An error happened' );
+    // });
     
     camera.rotation.x = -1;  
-    camera.rotation.z = -1;
-    camera.rotation.y = -1;
+    camera.rotation.z = 1;
+    camera.rotation.y = 0;
 
-    camera.position.x = -21; 
-    camera.position.z = 16;
-    camera.position.y = 22;
+    camera.position.x = 8; 
+    camera.position.z = 8;
+    camera.position.y = 20;
 
     // Circle 1
     var geometry = new THREE.CircleGeometry( 0.5, 32 );
     var material = new THREE.MeshBasicMaterial( { color: 0xdf4b4e } );
     circle1 = new THREE.Mesh( geometry, material );
     circle1.rotateX( 300 );
-    circle1.position.y=3.2;
-    circle1.position.x=-6.1;
+    circle1.position.y=2.7;
+    circle1.position.x=-4.6;
+    circle1.position.z=-4.2;
     circle1.callback = function() { alert("Open issues of Cockpit"); }
     scene.add( circle1 );
     controls.update();
@@ -151,9 +156,9 @@ function init() {
         ];
         var mesh = new THREE.Mesh( geometry, materials );
         mesh.rotateX( 300 );
-        mesh.position.y=3.26;
-        mesh.position.x=-6.3;
-        mesh.position.z=0.3;
+        mesh.position.y=2.71;
+        mesh.position.x=-4.8;
+        mesh.position.z=-4;
         scene.add( mesh );
         scene.add( mesh );
     } );
@@ -163,9 +168,14 @@ function init() {
     var material = new THREE.MeshBasicMaterial( { color: 0xdf4b4e } );
     circle2 = new THREE.Mesh( geometry, material );
     circle2.rotateX( 300 );
-    circle2.position.y=4.2;
-    circle2.position.x=6.9;
-    circle2.position.z=1;
+    circle2.position.y=2.76;
+    circle2.position.x=0;
+    circle2.position.z=-6.8;
+    // var box = gui.addFolder('circle');
+    // box.add(circle2.position, 'x', -10, 10).name('x').listen();
+    // box.add(circle2.position, 'y', -10, 10).name('y').listen();
+    // box.add(circle2.position, 'z', -10, 10).name('z').listen();
+    // box.open();
     circle2.callback = function() { alert("Open issues of Right Wing"); }
     scene.add( circle2 );
     controls.update();
@@ -183,10 +193,14 @@ function init() {
         ];
         var mesh = new THREE.Mesh( geometry, materials );
         mesh.rotateX( 300 );
-        mesh.position.y=4.25;
-        mesh.position.x=6.6;
-        mesh.position.z=1.2;
-
+        mesh.position.y=2.77;
+        mesh.position.x=-0.3;
+        mesh.position.z=-6.6;
+        // var box = gui.addFolder('number');
+        // box.add(mesh.position, 'x', -10, 10).name('x').listen();
+        // box.add(mesh.position, 'y', -10, 10).name('y').listen();
+        // box.add(mesh.position, 'z', -10, 10).name('z').listen();
+        // box.open();
         scene.add( mesh );
         scene.add( mesh );
     } );
@@ -196,9 +210,9 @@ function init() {
     var material = new THREE.MeshBasicMaterial( { color: 0xdf4b4e } );
     circle3 = new THREE.Mesh( geometry, material );
     circle3.rotateX( 300 );
-    circle3.position.y=2.95;
-    circle3.position.x=2.9;
-    circle3.position.z=-1.5;
+    circle3.position.y=2.7;
+    circle3.position.x=4.6;
+    circle3.position.z=-4.2;
     circle3.callback = function() { alert("Open issues of Left Engine"); }
     scene.add( circle3 );
     controls.update();
@@ -216,9 +230,9 @@ function init() {
         ];
         var mesh = new THREE.Mesh( geometry, materials );
         mesh.rotateX( 300 );
-        mesh.position.y=3;
-        mesh.position.x=2.7;
-        mesh.position.z=-1.3;
+        mesh.position.y=2.71;
+        mesh.position.x=4.35;
+        mesh.position.z=-4;
         scene.add( mesh );
         scene.add( mesh );
     } );
@@ -228,15 +242,10 @@ function init() {
     var material = new THREE.MeshBasicMaterial( { color: 0xdf4b4e } );
     circle4 = new THREE.Mesh( geometry, material );
     circle4.rotateX( 300 );
-    circle4.position.y=2.95;
-    circle4.position.x=2.9;
-    circle4.position.z=1.6;
+    circle4.position.y=2.9;
+    circle4.position.x=0;
+    circle4.position.z=7.3;
     circle4.callback = function() { alert("Open issues of Right Engine"); }
-    // var box = gui.addFolder('circle');
-    // box.add(circle4.position, 'x', -10, 10).name('x').listen();
-    // box.add(circle4.position, 'y', -10, 10).name('y').listen();
-    // box.add(circle4.position, 'z', -10, 10).name('z').listen();
-    // box.open();
     scene.add( circle4 );
     controls.update();
     var loader = new THREE.FontLoader();
@@ -253,14 +262,9 @@ function init() {
         ];
         var mesh = new THREE.Mesh( geometry, materials );
         mesh.rotateX( 300 );
-        mesh.position.y=3;
-        mesh.position.x=2.7;
-        mesh.position.z=1.8;
-        // var box = gui.addFolder('number');
-        // box.add(mesh.position, 'x', -10, 10).name('x').listen();
-        // box.add(mesh.position, 'y', -10, 10).name('y').listen();
-        // box.add(mesh.position, 'z', -10, 10).name('z').listen();
-        // box.open();
+        mesh.position.y=2.91;
+        mesh.position.x=-0.3;
+        mesh.position.z=7.5;
         scene.add( mesh );
         scene.add( mesh );
     } );
